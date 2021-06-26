@@ -33,7 +33,7 @@ spec:
       workspaces:
         - name: output
           workspace: source
-        - name: ssh-credentials
+        - name: ssh-directory
           workspace: ssh-creds
       params:
         - name: url
