@@ -22,7 +22,7 @@ spec:
       default: latest
   steps:
     - name: build
-      image: docker.io/rust:$(rust-version)
+      image: docker.io/rust:$(params.rust-version)
       command: [cargo]
       args: ["build", "$(params.compile-flags[*])"]
 
