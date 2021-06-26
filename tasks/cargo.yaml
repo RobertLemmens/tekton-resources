@@ -11,5 +11,5 @@ spec:
     - name: build
       image: docker.io/rust:1.52.1
       command: [cargo]
-      args: ["build", "${params.compile-flags[*]}"]
+      args: ["build", "$(params.compile-flags[*])"]
 

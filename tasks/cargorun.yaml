@@ -4,7 +4,7 @@ metadata:
   name: cargo-run
 spec:
   taskRef:
-    name: cargo-build-task
+    name: cargo-build
   params:
     - name: compile-flags
       value:
