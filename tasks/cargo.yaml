@@ -2,14 +2,21 @@ apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
   name: cargo-build
+  labels:
+    app.kubernets.io/version: "0.2"
+    tekton.dev/tags: build-tool
+    tekton.dev/displayName: "Cargo Build"
 spec:
   params:
     - name: compile-flags
       type: array
-      description: Compilation flags passed to cargo. Results in 'cargo build {params...}'
+      description: Compilation flags passed to cargo. Results in 'cargo build $param1 $param2 $param3...'
+    - name: rust-version
+      type: string
+      description: The rust version. Gets passed as the image tag. Results in 'docker.io/rust:$version'
   steps:
     - name: build
-      image: docker.io/rust:1.52.1
+      image: docker.io/rust:$(rust-version)
       command: [cargo]
       args: ["build", "$(params.compile-flags[*])"]
 
