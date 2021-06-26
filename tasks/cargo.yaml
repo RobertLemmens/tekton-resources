@@ -14,6 +14,7 @@ spec:
     - name: rust-version
       type: string
       description: The rust version. Gets passed as the image tag. Results in 'docker.io/rust:$version'
+      default: latest
   steps:
     - name: build
       image: docker.io/rust:$(rust-version)
