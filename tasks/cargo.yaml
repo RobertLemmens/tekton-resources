@@ -1,7 +1,7 @@
 apiVersion: tekton.dev/v1beta1
-kind: ClusterTask
+kind: Task
 metadata:
-  name: cargo-build-task
+  name: cargo-build
 spec:
   params:
     - name: compile-flags

@@ -1,0 +1,11 @@
+apiVersion: tekton.dev/v1beta1
+kind: TaskRun
+metadata:
+  name: cargo-run
+spec:
+  taskRef:
+    name: cargo-build-task
+  params:
+    - name: compile-flags
+      value:
+        - "--release"
