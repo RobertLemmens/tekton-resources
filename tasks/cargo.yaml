@@ -15,7 +15,7 @@ spec:
     - name: compile-flags
       type: array
       description: Compilation flags passed to cargo build. Results in 'cargo build $param1 $param2 $param3...'
-      optional: true
+      default: []
     - name: rust-version
       type: string
       description: The rust version to use. Gets passed as the image tag. Results in 'docker.io/rust:$version'
