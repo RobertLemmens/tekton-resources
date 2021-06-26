@@ -15,7 +15,7 @@ spec:
     - name: source
       description: The workspace that contains your cargo.toml and rust code. This will be the working directory. If this directory does not contain your source, set the context path aswell.
     - name: ssh-creds
-      description: The secret that contains your ssh credentials.
+      description: The directory that contains your ssh credentials.
       optional: true
   params:
     - name: GIT_URI
@@ -29,6 +29,7 @@ spec:
     - name: git-clone
       taskRef:
         name: git-clone
+        kind: ClusterTask
       workspaces:
         - name: output
           workspace: source
