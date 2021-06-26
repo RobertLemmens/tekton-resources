@@ -34,7 +34,6 @@ spec:
           workspace: source
         - name: ssh-credentials
           workspace: ssh-creds
-          optional: true
       params:
         - name: url
           value: '$(params.GIT_URI)'
