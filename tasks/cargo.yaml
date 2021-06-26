@@ -11,6 +11,9 @@ metadata:
 spec:
   description: >-
     This task builds rust source code via the official rust image on the docker hub. 
+  workspaces:
+    - name: source
+      description: The workspace that contains your cargo.toml and rust code. This will be the working directory.
   params:
     - name: compile-flags
       type: array
@@ -23,6 +26,7 @@ spec:
   steps:
     - name: build
       image: docker.io/rust:$(params.rust-version)
+      workingDir: $(workspaces.source.path)
       command: [cargo]
       args: ["build", "$(params.compile-flags[*])"]
 
