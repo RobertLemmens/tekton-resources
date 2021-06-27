@@ -1,20 +1,23 @@
 apiVersion: tekton.dev/v1beta1
 kind: ClusterTask
 metadata:
-  name: cargo-build
+  name: cargo
   labels:
     app.kubernets.io/version: "0.1"
   annotations:
     tekton.dev/pipelines.minVersion: "0.12.1"
     tekton.dev/tags: "build-tool, rust"
-    tekton.dev/displayName: "Cargo Build"
+    tekton.dev/displayName: "Cargo"
 spec:
   description: >-
-    This task builds rust source code via the official rust image on the docker hub. 
+    This task executes cargo commands via the official rust image on the docker hub. 
   workspaces:
     - name: source
       description: The workspace that contains your cargo.toml and rust code. This will be the working directory.
   params:
+    - name: GOAL
+      type: string
+      default: build
     - name: COMPILE_FLAGS
       type: array
       description: Compilation flags passed to cargo build. Results in 'cargo build $param1 $param2 $param3...'
@@ -24,9 +27,9 @@ spec:
       description: The rust version to use. Gets passed as the image tag. Results in 'docker.io/rust:$version'
       default: latest
   steps:
-    - name: build
+    - name: cargo-goals
       image: docker.io/rust:$(params.RUST_VERSION)
       workingDir: $(workspaces.source.path)
       command: [cargo]
-      args: ["build", "$(params.COMPILE_FLAGS[*])"]
+      args: ["$(params.GOAL)", "$(params.COMPILE_FLAGS[*])"]
 

@@ -40,7 +40,7 @@ spec:
           value: '$(params.GIT_URI)'
     - name: cargo-build
       taskRef:
-        name: cargo-build
+        name: cargo
         kind: ClusterTask
       runAfter:
         - git-clone
