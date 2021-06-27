@@ -42,6 +42,8 @@ spec:
       taskRef:
         name: cargo-build
         kind: ClusterTask
+      runAfter:
+        - git-clone
       workspaces:
         - name: source
           workspace: source
