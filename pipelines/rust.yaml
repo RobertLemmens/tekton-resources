@@ -43,5 +43,5 @@ spec:
         name: cargo-build
         kind: ClusterTask
       workspaces:
-        name: source
-        workspace: source
+        - name: source
+          workspace: source
