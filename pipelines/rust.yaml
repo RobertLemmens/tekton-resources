@@ -38,3 +38,10 @@ spec:
       params:
         - name: url
           value: '$(params.GIT_URI)'
+    - name: cargo-build
+      taskRef:
+        name: cargo-build
+        kind: ClusterTask
+      workspaces:
+        name: source
+        workspace: source
