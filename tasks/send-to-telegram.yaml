@@ -33,7 +33,7 @@ spec:
     script: |
       #!/bin/sh
       MESSAGE=`echo $MESSAGE | sed -e 's/\"/\\\\"/g'`
-      JSON="{\"chat_id\": ${CHAT_ID}, \"text\": \"${MESSAGE}\" \"parse_mode\":\"${PARSE_MODE}\"}"
+      JSON="{\"chat_id\": ${CHAT_ID}, \"text\": \"${MESSAGE}\", \"parse_mode\":\"${PARSE_MODE}\"}"
       curl -X POST -H 'Content-Type: application/json' -d "${JSON}" https://api.telegram.org/bot${BOT_TOKEN}/sendMessage
     env:
     - name: BOT_TOKEN
