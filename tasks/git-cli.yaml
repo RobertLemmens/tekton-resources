@@ -23,9 +23,6 @@ spec:
     - name: source
       description: A workspace that contains the fetched git repository.
 
-    - name: input
-      description: A workspace that contains file that needs to be added to git.
-
     - name: ssh-directory
       optional: true
       description: |
