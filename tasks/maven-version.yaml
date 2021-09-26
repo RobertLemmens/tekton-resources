@@ -1,0 +1,32 @@
+apiVersion: tekton.dev/v1beta1
+kind: ClusterTask
+metadata:
+  name: maven-version
+  labels:
+    app.kubernetes.io/version: "0.1"
+  annotations:
+    tekton.dev/pipelines.minVersion: "0.12.1"
+    tekton.dev/tags: "build-tool, maven"
+    tekton.dev/displayName: "maven-version"
+spec:
+  description: >-
+    This task can be used to get the project version as result
+  workspaces:
+    - name: source
+      description: The workspace that contains your pom.xml
+  results:
+    - name: VERSION
+      description: Version of the application tag
+  steps:
+    - name: get-version
+      image: maven
+      workingDir: $(workspaces.source.path)
+      script: |
+        #!/usr/bin/env bash
+        mvn org.apache.maven.plugins:maven-help-plugin:3.1.0:evaluate -Dexpression=project.version -q -DforceStdout > $(workspaces.source.path)/version
+        echo $(workspaces.source.path)/version
+    - name: write-result
+      image: maven
+      script: >-
+        cat $(workspaces.source.path)/version | tee /tekton/results/VERSION
+        cat /tekton/results/version

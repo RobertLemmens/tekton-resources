@@ -1,0 +1,56 @@
+apiVersion: tekton.dev/v1beta1
+kind: ClusterTask
+metadata:
+  name: maven-buildah
+  labels:
+    app.kubernetes.io/version: "0.1"
+  annotations:
+    tekton.dev/pipelines.minVersion: "0.12.1"
+    tekton.dev/tags: "build-tool, maven"
+    tekton.dev/displayName: "maven-buildah"
+spec:
+  description: >-
+    This task can be used to build and push maven projects as containers. It generates a version tag from project.version
+  workspaces:
+    - name: source
+      description: The workspace that contains your pom.xml
+    - name: dockerconfig
+      description: docker auth file
+  volumes:
+    - emptyDir: {}
+      name: varlibcontainers
+  params:
+    - name: IMAGE
+      type: string
+    - name: DOCKERFILE
+      type: string
+    - name: PUSH_EXTRA_ARGS
+      type: string
+  results:
+    - name: IMAGE_DIGEST
+      description: Digest of the image just built.
+    - name: IMAGE_VERSION
+      description: Version of the application tag
+  steps:
+    - name: build-and-push
+      image: rlemmens/mvn-buildah
+      workingDir: $(workspaces.source.path)
+      securityContext:
+        privileged: true
+      volumeMounts:
+        - mountPath: /var/lib/containers
+          name: varlibcontainers
+      script: |
+        #!/usr/bin/env bash
+        VERSION=$(mvn org.apache.maven.plugins:maven-help-plugin:3.1.0:evaluate -Dexpression=project.version -q -DforceStdout)
+        echo $VERSION > $(workspaces.source.path)/image-version
+        buildah --storage-driver=overlay bud --format=oci \
+          --tls-verify=true --no-cache \
+          -f $(params.DOCKERFILE) -t $(params.IMAGE):$VERSION .
+        buildah --storage-driver=overlay push \
+                $(params.PUSH_EXTRA_ARGS) --tls-verify=true \
+                --digestfile $(workspaces.source.path)/image-digest $(params.IMAGE):$VERSION \
+                docker://$(params.IMAGE):$VERSION
+    - name: digest-to-results
+      image: rlemmens/mvn-buildah
+      script: cat $(workspaces.source.path)/image-digest | tee /tekton/results/IMAGE_DIGEST && cat $(workspaces.source.path)/image-version | tee /tekton/results/IMAGE_VERSION
