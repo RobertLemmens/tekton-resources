@@ -31,7 +31,7 @@ spec:
       description: The image that contains cargo.
         Defaults to the official rust image on the docker hub.
         When using a custom image, make sure cargo is on the path.
-      default: docker.io/rust@sha256:ea81624bfff9a2d46fc181532acdeafda3cf8c31d25536d443ef902d4894f72a
+      default: docker.io/rust@sha256:3d7d6a46ef6f32acfa82f1f0ebe8965d061ba3be4097689677cf84a6ca550dff
   steps:
     - name: cargo-command
       image: $(params.CARGO_IMAGE)
