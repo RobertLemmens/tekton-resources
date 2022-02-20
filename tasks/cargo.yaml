@@ -38,3 +38,10 @@ spec:
       workingDir: $(workspaces.source.path)
       command: [cargo]
       args: ["$(params.COMMAND)", "$(params.COMPILE_FLAGS[*])"]
+      resources:
+        requests:
+          memory: 1Gi
+          cpu: 800m
+        limits:
+          memory: 2Gi
+          cpu: 1000m
