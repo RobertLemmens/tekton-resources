@@ -164,7 +164,8 @@ spec:
       - name: WORKSPACE_SSL_CA_DIRECTORY_PATH
         value: $(workspaces.ssl-ca-directory.path)
       securityContext:
-        privileged: true
+        runAsNonRoot: true
+        runAsUser: 65532
       script: |
         #!/usr/bin/env sh
         set -eu
