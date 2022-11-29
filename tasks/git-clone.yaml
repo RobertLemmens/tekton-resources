@@ -163,6 +163,8 @@ spec:
         value: $(workspaces.ssl-ca-directory.bound)
       - name: WORKSPACE_SSL_CA_DIRECTORY_PATH
         value: $(workspaces.ssl-ca-directory.path)
+      securityContext:
+        runAsNonRoot: false
       script: |
         #!/usr/bin/env sh
         set -eu
